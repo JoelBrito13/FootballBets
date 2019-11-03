@@ -27,7 +27,7 @@ urlpatterns = [
     ),
     url(
         regex=r'^search/$',
-        view=views.SearchGame.as_view(),
+        view=views.SearchGame.search_game,
         name='search game'
     )
 ]
