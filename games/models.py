@@ -7,3 +7,9 @@ class Person(AbstractUser):
 
     def __str__(self):
         return "User(<{}>)".format(self.username)
+
+
+class Game(models.Model):
+    match_id = models.IntegerField()
+    country_name = models.TextField()
+
