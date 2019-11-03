@@ -12,12 +12,6 @@ class Person(AbstractUser):
 #  lógica para o usuário fazer apostas
 
 
-class UserAccount:
-
-    def __init__(self, name, balance=0.0):
-        self.name = name
-        self.balance = balance
-
     def get_balance(self):
         return self.balance
 
