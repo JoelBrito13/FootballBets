@@ -12,8 +12,10 @@ class Bet(models.Model):
         (DRAW, 'Draw'),
         (AWAY_WIN, 'Away Win')
     )
-    game = models.ForeignKey(Game)
-    user = models.ForeignKey(Person)
+    game = models.OneToOneField(Game,
+                             on_delete=models.CASCADE)
+    user = models.OneToOneField(Person,
+                             on_delete=models.CASCADE)
     game_bet = models.CharField(
         max_length=2,
         choices=GAME_RESULTS
