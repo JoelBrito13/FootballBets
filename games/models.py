@@ -2,13 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class Person(AbstractUser):
-    description = models.TextField(blank=True)
-
-    def __str__(self):
-        return "User(<{}>)".format(self.username)
-
-
 class Game(models.Model):
     match_id = models.IntegerField()
     country_name = models.CharField(max_length=50)
@@ -23,10 +16,6 @@ class Game(models.Model):
     prob_HW = models.FloatField()
     prob_D = models.FloatField()
     prob_AW = models.FloatField()
-    Winner = models.CharField()
-
-    def __str__(self):
-        return self.name
-
+    Winner = models.CharField(max_length=100)
 
 
