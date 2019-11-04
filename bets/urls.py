@@ -8,4 +8,14 @@ urlpatterns = [
         view=views.BetView.as_view(),
         name='bets'
     ),
+    url(
+        regex=r'^alter/<bet>$',
+        view=views.Alter.as_view(),
+        name='alter'
+    ),
+    url(
+        regex=r'^test/$',
+        view=views.Test.as_view(),
+        name='test'
+    ),
 ]
