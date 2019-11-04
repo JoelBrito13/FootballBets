@@ -18,10 +18,8 @@
   <footer>
     <form action='/games/search/' method="post">
       {% csrf_token %}
-      <label>
         <input type="text" name="search" placeholder="Search for games">
         {{ form }}
-      </label>
     </form>
 
   </footer>
