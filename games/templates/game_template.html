@@ -1,9 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
-  <form action="../games/templates" method="post">
-  {% csrf_token %}
-  { {form} }
-  <input type="submit" value="Search game">
-</form>
+  <h1>Games</h1>
+  {% if games %}
+    {% for game in games %}
+      <li>Matches</li>
+      <ul>
+        <li>{{game.match_date}}</li>
+        <li>{{ game.match_status }}</li>
+        <li>{{ game.match_time }}</li>
+        <li>{{ game.match_hometeam_name }}</li>
+        <li>{{ game.match_awayteam_name }}</li>
+        <li>{{ game.match_hometeam_score }}</li>
+        <li>{{ game.match_awayteam_score }}</li>
+      </ul>
+    {% endfor %}
+  {% endif %}
+  <footer>
+    <form action='/games/search/' method="post">
+      {% csrf_token %}
+      <label>
+        <input type="text" name="search" placeholder="Search for games">
+        {{ form }}
+      </label>
+    </form>
 
+  </footer>
 {% endblock %}
