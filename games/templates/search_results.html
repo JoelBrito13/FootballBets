@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Search Results</h1>
+  {% if games %}
+    <ul>
+      {% for game in games %}
+        <li>
+          {{ game.match_hometeam_name }}, {{ game.match_awayteam_name }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No results found</p>
+  {% endif %}
+{% endblock %}
+
