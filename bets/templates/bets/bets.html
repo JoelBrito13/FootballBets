@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+        <h2 class="form-signin-heading">Bets Page</h2>
+    {% for x in rows %}
+        {{x}}
+
+    {% endfor %}
+    </form method="POST">
+    {% csrf_token %}
+        <input type="text" name="user" placeholder="User">
+        <input type="text" name="game" placeholder="Game">
+        <input type="text" name="amount" placeholder="Amount">
+        {{form}}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+    </form>
+{% endblock %}

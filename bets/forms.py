@@ -1,9 +1,10 @@
-from django.contrib.auth.forms import UserCreationForm
+from django import forms
 
-from users.models import Person
+from .models import Bet
+from games.models import Game
 
+class CreateBet(forms.Form):
+    user = forms.IntegerField
+    game = forms.IntegerField
+    amount = forms.FloatField
 
-class CustomUserCreationForm(UserCreationForm):
-    class Meta:
-        model = Person
-        fields = ('username',)
