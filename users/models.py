@@ -20,4 +20,4 @@ class Person(AbstractUser):
             print("Withdraw: {}. Current balance: {}".format(amount, self.balance))
 
     def __str__(self):
-        return "User(<{}>)".format(self.username)
+        return "User: {}".format(self.username)

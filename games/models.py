@@ -42,10 +42,8 @@ class Game(models.Model):
         return self.match_date < datetime.date.today()
 
     def __str__(self):
-        return "Match: {} {} - {} {} :{} - {}".format(self.match_id,
+        return "{} match: {}, {} x {} - {}".format(self.league_name,
+                                                      self.match_id,
                                                       self.match_hometeam_name,
-                                                      self.match_hometeam_score,
                                                       self.match_awayteam_name,
-                                                      self.match_awayteam_score,
-                                                      self.match_date,
-                                                      self.league_name)
+                                                      self.match_date)

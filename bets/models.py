@@ -66,4 +66,4 @@ class Bet(models.Model):
             return self.game.prob_D
 
     def __str__(self):
-        return "Bet Info(<{} {} {}>)".format(self.game, self.game_bet, self.amount)
+        return "{} Bet ({} - bet:{},{}€ profit:{})".format(self.user, self.game, self.game_bet,self.amount, self.balance)
