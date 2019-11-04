@@ -20,7 +20,8 @@ class Bet(models.Model):
         max_length=2,
         choices=GAME_RESULTS
     )
-    amount = models.FloatField
+    amount = models.FloatField(null=False,
+                               default=0)
     game_finished = models.BooleanField(
         default=False
     )
@@ -28,20 +29,23 @@ class Bet(models.Model):
         default=0
     )
 
-    def updateStatus(self):
+    def update_status(self):
         if self.game_finished:
             return
+        self.game.update()
         if Game.match_status == 'Finished':
+            self.define_profit()        #self.balance = profit of the game
             self.user.insert_credits(
-                self.update_balance()
+                self.balance
             )
 
             self.game_finished = True
 
-    def update_balance(self):
+    def define_profit(self):
         if self.game_bet == self.define_result():
-            return self.amount * 100 / self.get_prob()
-        return 0
+            self.balance = self.amount * 100 / self.get_prob()
+            self.balance -= self.amount
+        return self.balance
 
     def define_result(self):
         home = self.game.match_hometeam_score

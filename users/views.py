@@ -29,7 +29,6 @@ class LoginView(TemplateView, View):
 
         return redirect(request.POST.get('next', 'home'))
 
-
 class LogoutView(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated():

@@ -4,7 +4,10 @@ from django.db import models
 
 class Person(AbstractUser):
     description = models.TextField(blank=True)
-    balance = models.FloatField()
+    balance = models.FloatField(
+        null=False,
+        default=0
+    )
 
     def insert_credits(self, amount):
         self.balance += amount

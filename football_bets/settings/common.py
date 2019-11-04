@@ -36,9 +36,9 @@ THIRD_PARTY_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
+    'bets',
     'users',
     'games',
-    'bets',
     # Your stuff: custom apps go here
 )
 
@@ -72,7 +72,7 @@ FIXTURE_DIRS = (
 )
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.RemoteUserBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 # EMAIL CONFIGURATION
@@ -83,7 +83,7 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.s
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = (
-    ("""{{author_name}}""", '{{email}}'),
+    (('admin', 'admin@ua.pt'), ('Mary', 'mary@example.com')),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
@@ -94,10 +94,11 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-    'default': env.db("DATABASE_URL", default="sqlite:///{}".format(ROOT_DIR+'dev.db')),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
+    }
 }
-DATABASES['default']['ATOMIC_REQUESTS'] = True
-
 
 # GENERAL CONFIGURATION
 # ------------------------------------------------------------------------------

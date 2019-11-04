@@ -1,9 +1,11 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
-#from .models import Person
+from .models import Game
 
 
-#@admin.register(Person)
+
+admin.site.register(Game)
+#@admin.register(Game)
 #class PersonAdminModel(UserAdmin):
 #    pass
+

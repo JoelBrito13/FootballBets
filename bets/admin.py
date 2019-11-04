@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
-from .models import Person
+from .models import Bet
 
-@admin.register(Person)
-class PersonAdminModel(UserAdmin):
-    pass
+admin.site.register(Bet)
+#@admin.register(Bet)
+#class PersonAdminModel(UserAdmin):
+#    pass
