@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, View
 from games.forms import SearchGame
 
 
-class SearchGame(forms.Form, TemplateView, View):
+class Search(forms.Form, TemplateView, View):
     template_name = 'game_template.html'
 
     def search_game(self, request):
@@ -21,9 +21,4 @@ class SearchGame(forms.Form, TemplateView, View):
 
     def get(self, request, *args, **kwargs):
         self.search_game(request)
-        return super(SearchGame, self).get(request, *args, **kwargs)
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(SearchGame, self).get_context_data(**kwargs)
-    #     context['print_data'] = self.print_data()
-    #     return context
+        return super(Search, self).get(request, *args, **kwargs)
