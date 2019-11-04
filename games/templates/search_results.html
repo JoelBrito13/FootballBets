@@ -5,7 +5,11 @@
     <ul>
       {% for game in games %}
         <li>
-          {{ game.match_hometeam_name }}, {{ game.match_awayteam_name }}
+          <ul>
+            <p> Home: {{ game.match_hometeam_name }} vs. Away: {{ game.match_awayteam_name }}</p>
+            <p> Score: {{ game.match_hometeam_score }} : {{ game.match_awayteam_score }}</p>
+            <p>Date: {{ game.match_date }}</p>
+          </ul>
         </li>
       {% endfor %}
     </ul>

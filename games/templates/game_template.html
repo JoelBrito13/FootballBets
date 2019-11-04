@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
   <h1>Games</h1>
+  <h2>Search for games</h2>
+  <form action='/games/search/' method="post">
+      {% csrf_token %}
+      <label>
+{#        <input type="text" name="search" placeholder="Search for games">#}
+{#        <input type="text" name="league_id" placeholder="Search for leagues">#}
+        <input type="text" name="country_name" placeholder="Search for countries">
+        <input type="text" name="_from" placeholder="Date of start">
+        <input type="text" name="to" placeholder="End date">
+        <input type="submit" value="Search">
+        {{ form }}
+      </label>
+    </form>
+  <h3>Recent games</h3>
   {% if games %}
     {% for game in games %}
       <li>Matches</li>
@@ -15,14 +29,4 @@
       </ul>
     {% endfor %}
   {% endif %}
-  <footer>
-    <form action='/games/search/' method="post">
-      {% csrf_token %}
-      <label>
-        <input type="text" name="search" placeholder="Search for games">
-        {{ form }}
-      </label>
-    </form>
-
-  </footer>
 {% endblock %}
