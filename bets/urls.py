@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import  url
 
 from . import views
 
@@ -9,7 +9,7 @@ urlpatterns = [
         name='bets'
     ),
     url(
-        regex=r'^alter$',
+        regex=r'^alter/(?P<bet>\d{4})/$',
         view=views.Alter.as_view(),
         name='alter'
     ),
