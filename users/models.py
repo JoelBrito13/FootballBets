@@ -19,5 +19,8 @@ class Person(AbstractUser):
             self.balance -= amount
             print("Withdraw: {}. Current balance: {}".format(amount, self.balance))
 
+    def get_balance(self):
+        return self.balance
+
     def __str__(self):
         return "User: {}".format(self.username)
