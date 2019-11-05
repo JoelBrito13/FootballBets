@@ -68,7 +68,6 @@ class MembersView(LoginRequiredMixin, TemplateView, View):
 class ProfileView(TemplateView, View):
     template_name = 'users/profile.html'
     data = LoadCreditsForm
-    user = Person()
 
     def get(self, request, *args, **kwargs):
         form = LoadCreditsForm()
@@ -76,8 +75,14 @@ class ProfileView(TemplateView, View):
 
     def post(self, request):
         form = self.data(data=request.POST)
+        user = Person()
         if form.is_valid():
             if form.cleaned_data['insert_credit']:
-                pass
+                amount = float(form.cleaned_data['insert_credit'])
+                new_bal = user.insert_credits(amount=amount)
+                return self.render_to_response({'amount': amount})
             if form.cleaned_data['withdraw_credit']:
-                pass
+                amount = float(form.cleaned_data['insert_credit'])
+                new_bal = user.withdraw_credits(amount=amount)
+                return self.render_to_response({'amount': amount})
+
