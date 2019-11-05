@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, View
-
+import django.contrib.messages
 from .forms import CustomUserCreationForm
 from .forms import *
 
@@ -68,16 +68,21 @@ class MembersView(LoginRequiredMixin, TemplateView, View):
 class ProfileView(TemplateView, View):
     template_name = 'users/profile.html'
     data = LoadCreditsForm
-    user = Person()
 
     def get(self, request, *args, **kwargs):
         form = LoadCreditsForm()
-        return self.render_to_response({'forms': form})
+        return self.render_to_response({'form': form})
 
     def post(self, request):
         form = self.data(data=request.POST)
+        user = Person()
         if form.is_valid():
-            if form.cleaned_data['insert_credit']:
-                pass
-            if form.cleaned_data['withdraw_credit']:
-                pass
+            messages.info(request, 'Credits updated successfully')
+            amount = float(form.cleaned_data['insert_credit'])
+            # if form.cleaned_data['insert_credit']:
+            user.insert_credits(form.cleaned_data['insert_credit'])
+            return self.render_to_response({'amount': form.cleaned_data['insert_credit']})
+            # if form.cleaned_data['withdraw_credit']:
+            #     new_bal = user.withdraw_credits(amount=amount)
+            #     return self.render_to_response({'amount': amount})
+

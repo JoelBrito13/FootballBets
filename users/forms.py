@@ -11,5 +11,5 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class LoadCreditsForm(forms.Form):
-    insert_credit = forms.CharField(max_length=100, label=' Insert Credits', required=False)
-    withdraw_credit = forms.CharField(max_length=100, label='Withdraw Credits', required=False)
+    insert_credit = forms.FloatField(required=False, min_value=1)
+    withdraw_credit = forms.FloatField(required=False, min_value=1)

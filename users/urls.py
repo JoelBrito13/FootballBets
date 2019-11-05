@@ -32,5 +32,9 @@ urlpatterns = [
     ),
     url(regex=r'^profile/updatebal/',
         view=views.ProfileView.as_view(),
-        name='updatebal')
+        name='updatebal'
+    ),
+    url(regex=r'^profile/insert_cred/',
+        view=views.ProfileView.as_view(),
+        name='insert')
 ]
