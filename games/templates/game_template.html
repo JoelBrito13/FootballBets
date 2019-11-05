@@ -2,6 +2,7 @@
 {% block content %}
   <h1>Games</h1>
   <h2>Search for games</h2>
+  <body>
   <form action='/games/search/' method="post">
       {% csrf_token %}
       <label>
@@ -29,4 +30,5 @@
       </ul>
     {% endfor %}
   {% endif %}
+  </body>
 {% endblock %}

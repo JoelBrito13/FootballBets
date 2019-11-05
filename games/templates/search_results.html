@@ -1,14 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Search Results</h1>
+
   {% if games %}
     <ul>
       {% for game in games %}
         <li>
           <ul>
             <p> Home: {{ game.match_hometeam_name }} vs. Away: {{ game.match_awayteam_name }}</p>
-            <p> Score: {{ game.match_hometeam_score }} : {{ game.match_awayteam_score }}</p>
-            <p>Date: {{ game.match_date }}</p>
+            <ul>
+              <p>Date: {{ game.match_date }}</p>
+            {% if not game.match_status == 'Finished' %}
+              <p>Match status: To happen</p>
+              {% if bet %}
+                {{ bet }}
+                <ul>
+                  <p>Chances:</p>
+                  <p>HW({{ game.prob_HW }}%) D({{ game.prob_D }}%) AW({{ game.prob_AW }}%)</p>
+                  <input type="submit" value="Bet">
+                </ul>
+              {% endif %}
+            {% else %}
+              <p> Score: {{ game.match_hometeam_score }} : {{ game.match_awayteam_score }}</p>
+              <p>Match status: {{ game.match_status }}</p>
+            {% endif %}
+            </ul>
           </ul>
         </li>
       {% endfor %}
@@ -17,4 +33,5 @@
     <p>No results found</p>
   {% endif %}
 {% endblock %}
+
 

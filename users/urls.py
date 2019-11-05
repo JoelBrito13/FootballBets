@@ -25,4 +25,12 @@ urlpatterns = [
         view=views.MembersView.as_view(),
         name='members'
     ),
+    url(
+        regex=r'^profile/$',
+        view=views.ProfileView.as_view(),
+        name='profile'
+    ),
+    url(regex=r'^profile/updatebal/',
+        view=views.ProfileView.as_view(),
+        name='updatebal')
 ]

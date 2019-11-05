@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView, View
 
 from .forms import CustomUserCreationForm
+from .forms import *
 
 
 class LoginView(TemplateView, View):
@@ -62,3 +63,21 @@ class MembersView(LoginRequiredMixin, TemplateView, View):
 
     def get(self, request, *args, **kwargs):
         return self.render_to_response({})
+
+
+class ProfileView(TemplateView, View):
+    template_name = 'users/profile.html'
+    data = LoadCreditsForm
+    user = Person()
+
+    def get(self, request, *args, **kwargs):
+        form = LoadCreditsForm()
+        return self.render_to_response({'forms': form})
+
+    def post(self, request):
+        form = self.data(data=request.POST)
+        if form.is_valid():
+            if form.cleaned_data['insert_credit']:
+                pass
+            if form.cleaned_data['withdraw_credit']:
+                pass

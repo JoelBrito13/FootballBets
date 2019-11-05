@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1>Welcome to your profile</h1>
+  <body>
+      <form action="/users/profile/updatebal/" method="post">
+        {% csrf_token %}
+{#        <label>#}
+{#          <input type="text" placeholder="Insert Credits">#}
+{#        </label>#}
+{#        <label>#}
+{#          <input type="text" placeholder="Withdraw Credits">#}
+{#        </label>#}
+        {{ form }}
+        <input type="submit" value="Search">
+      </form>
+  </body>
+{% endblock %}
