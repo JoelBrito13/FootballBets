@@ -31,6 +31,7 @@ class SearchView(forms.Form, TemplateView, View):
 
     def get(self, request, *args, **kwargs):
         print("ENTRA")
+        bet = self.bet()
         form = SearchParam()
 
         return self.render_to_response({'form': form, 'bet' : bet})

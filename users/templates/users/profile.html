@@ -2,16 +2,28 @@
 {% block content %}
   <h1>Welcome to your profile</h1>
   <body>
-      <form action="/users/profile/updatebal/" method="post">
+      <form action="/users/profile/insert_cred/" method="post">
         {% csrf_token %}
-        <label>
-          <input type="text" placeholder="Insert Credits">
-        </label>
-        <label>
-          <input type="text" placeholder="Withdraw Credits">
-        </label>
-        {{ form }}
-        <input type="submit" value="Search">
-      </form>
+        <ul>
+          <li>
+            <label>
+              <input type="text" placeholder="Amount"/> <input type="Submit" value="Insert Credits">
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="text" placeholder="Amount"/> <input type="Submit" value="Withdraw Credits">
+            </label>
+          </li>
+        </ul>
+{#      </form>#}
+{#        <form action="/users/profile/insert_cred/" method="post"></form>#}
+{#        {% csrf_token %}#}
+{#        <label>#}
+{#          {{ form }} <input type="Button" value="Update">#}
+{#        </label>#}
+{#      </form>#}
+{#        {{ form }}#}
+{#      </form>#}
   </body>
 {% endblock %}
