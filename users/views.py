@@ -38,7 +38,6 @@ class LogoutView(View):
         messages.success(request, "You are now logged out!")
         return redirect('home')
 
-
 class RegisterView(TemplateView):
     template_name = 'users/register.html'
 

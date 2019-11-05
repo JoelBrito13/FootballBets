@@ -8,3 +8,10 @@ class CreateBet(forms.Form):
     game = forms.IntegerField
     amount = forms.FloatField
 
+class DeleteForm(forms.Form):
+    bet_id_del = forms.IntegerField(label='Bets')
+
+class ChangeBet(forms.Form):
+    user = forms.IntegerField
+    game = forms.IntegerField
+    amount = forms.FloatField
