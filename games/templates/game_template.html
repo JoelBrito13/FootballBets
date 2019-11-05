@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+
 {% block content %}
   <h1>Games</h1>
   <h2>Search for games</h2>
@@ -6,8 +8,6 @@
   <form action='/games/search/' method="post">
       {% csrf_token %}
       <label>
-{#        <input type="text" name="search" placeholder="Search for games">#}
-{#        <input type="text" name="league_id" placeholder="Search for leagues">#}
         <input type="text" name="country_name" placeholder="Search for countries">
         <input type="text" name="_from" placeholder="Date of start">
         <input type="text" name="to" placeholder="End date">
@@ -15,20 +15,5 @@
         {{ form }}
       </label>
     </form>
-  <h3>Recent games</h3>
-  {% if games %}
-    {% for game in games %}
-      <li>Matches</li>
-      <ul>
-        <li>{{game.match_date}}</li>
-        <li>{{ game.match_status }}</li>
-        <li>{{ game.match_time }}</li>
-        <li>{{ game.match_hometeam_name }}</li>
-        <li>{{ game.match_awayteam_name }}</li>
-        <li>{{ game.match_hometeam_score }}</li>
-        <li>{{ game.match_awayteam_score }}</li>
-      </ul>
-    {% endfor %}
-  {% endif %}
   </body>
 {% endblock %}

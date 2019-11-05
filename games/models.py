@@ -66,11 +66,6 @@ class Game(models.Model):
 
         return Game.objects.get(search_id)
 
-    def save(self, **kwargs):
-        if Game.objects.exists() and not self.pk:
-            raise ValidationError('Erroe Saving Game')
-        return super(Game, self).save(**kwargs)
-
     def __str__(self):
         return "{} match: {}, {} x {} - {}".format(self.league_name,
                                                    self.match_id,

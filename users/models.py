@@ -22,9 +22,5 @@ class Person(AbstractUser):
             print("Withdraw: {}. Current balance: {}".format(amount, self.balance))
             self.save()
 
-    def save(self, **kwargs):
-        if Person.objects.exists() and not self.pk:
-            raise ValidationError('Erroe Saving Game')
-        return super(Person, self).save(**kwargs)
     def __str__(self):
         return "User: {}".format(self.username)

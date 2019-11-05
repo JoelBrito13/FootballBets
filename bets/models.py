@@ -46,7 +46,6 @@ class Bet(models.Model):
     def define_profit(self):
         if self.game_bet == self.define_result():
             self.balance = self.amount * 100 / self.get_prob()
-            self.balance -= self.amount
         return self.balance
 
     def define_result(self):
@@ -67,10 +66,7 @@ class Bet(models.Model):
         if self.game_bet == self.DRAW:
             return self.game.prob_D
 
-    def save(self, **kwargs):
-        if Bet.objects.exists() and not self.pk:
-            raise ValidationError('Erroe Saving Game')
-        return super(Bet, self).save(**kwargs)
+
 
     def __str__(self):
         return "{} Bet ({} bet: {},{}€ profit:{})".format(self.user, self.game, self.game_bet.title(), self.amount, self.balance)

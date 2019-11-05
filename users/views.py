@@ -4,6 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, View
 import django.contrib.messages
+
+from users.models import Person
 from .forms import CustomUserCreationForm
 from .forms import *
 
@@ -74,15 +76,20 @@ class ProfileView(TemplateView, View):
         return self.render_to_response({'form': form})
 
     def post(self, request):
-        form = self.data(data=request.POST)
-        user = Person()
-        if form.is_valid():
-            messages.info(request, 'Credits updated successfully')
-            amount = float(form.cleaned_data['insert_credit'])
-            # if form.cleaned_data['insert_credit']:
-            user.insert_credits(form.cleaned_data['insert_credit'])
-            return self.render_to_response({'amount': form.cleaned_data['insert_credit']})
-            # if form.cleaned_data['withdraw_credit']:
-            #     new_bal = user.withdraw_credits(amount=amount)
-            #     return self.render_to_response({'amount': amount})
+        if request.user.is_authenticated:
+            form = self.data(data=request.POST)
+            user = request.user
+            if form.is_valid():
+                if form.cleaned_data['insert_credit']:
+                    amount = form.cleaned_data['insert_credit']
+                    user.insert_credits(amount)
+                    messages.info(request, 'Credits Inserted successfully')
+
+                elif form.cleaned_data['withdraw_credit']:
+                    amount = form.cleaned_data['withdraw_credit']
+                    user.withdraw_credits(amount)
+
+                    messages.info(request, 'Credits withdrawed successfully')
+                return self.render_to_response({'amount': amount})
+        messages.info(request, 'Need to be Logged in')
 
