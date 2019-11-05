@@ -66,7 +66,5 @@ class Bet(models.Model):
         if self.game_bet == self.DRAW:
             return self.game.prob_D
 
-
-
     def __str__(self):
-        return "{} Bet ({} bet: {},{}€ profit:{})".format(self.user, self.game, self.game_bet.title(), self.amount, self.balance)
+        return "{} Bet ({} bet: {},{}€ profit:{})".format(self.user, self.game, self.game_bet, self.amount, self.balance)

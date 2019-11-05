@@ -43,28 +43,27 @@ class Game(models.Model):
         return self.match_date < datetime.date.today()
 
     def add_game(self, search_id):
-        if not Game.objects.exists(search_id):
+        current = Game.objects.filter(match_id=search_id)
+        if not current:
             url = "{}&match_id={}".format(self.URL_UPDATE, search_id)
             jsonResponse = make_request(url)[0]
 
-            self.match_id = jsonResponse['match_id']
+            self.match_id = int(jsonResponse['match_id'])
             self.country_name = jsonResponse['country_name']
             self.league_name = jsonResponse['league_name']
             self.match_date = jsonResponse['match_date']
             self.match_status = jsonResponse['match_status']
             self.match_time = jsonResponse['match_time']
             self.match_hometeam_name = jsonResponse['match_hometeam_name']
-            self.match_hometeam_score = jsonResponse['match_hometeam_score']
             self.match_awayteam_name = jsonResponse['match_awayteam_name']
-            self.match_awayteam_score = jsonResponse['match_awayteam_score']
-            self.prob_HW = jsonResponse['prob_HW']
-            self.prob_D = jsonResponse['prob_D']
-            self.prob_AW = jsonResponse['prob_AW']
+            self.prob_HW = float(jsonResponse['prob_HW'])
+            self.prob_D = float(jsonResponse['prob_D'])
+            self.prob_AW = float(jsonResponse['prob_AW'])
 
             self.save()
             return self
 
-        return Game.objects.get(search_id)
+        return current
 
     def __str__(self):
         return "{} match: {}, {} x {} - {}".format(self.league_name,

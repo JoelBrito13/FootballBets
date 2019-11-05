@@ -92,4 +92,5 @@ class ProfileView(TemplateView, View):
                     messages.info(request, 'Credits withdrawed successfully')
                 return self.render_to_response({'amount': amount})
         messages.info(request, 'Need to be Logged in')
+        return redirect('games')
 

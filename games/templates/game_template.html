@@ -5,7 +5,7 @@
   <h1>Games</h1>
   <h2>Search for games</h2>
   <body>
-  <form action='/games/search/' method="post">
+  <form action='/games/' method="post">
       {% csrf_token %}
       <label>
         <input type="text" name="country_name" placeholder="Search for countries">

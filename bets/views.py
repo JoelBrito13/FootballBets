@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 
 from games.models import Game
 from django.shortcuts import redirect
-from .forms import CreateBet, DeleteForm
+from .forms import RegisterBet, DeleteForm
 
 from .models import Bet
 
@@ -37,60 +37,40 @@ class BetView(TemplateView, View):
                 if bet.user == request.user or request.user.is_superuser:
                     bet.user.insert_credits(bet.amount)  # return credit to user
                     bet.delete()
-                    messages.success("Bet deleted correctly")
-            messages.error("Form is not Valid")
-        messages.error("User not logged")
+                    messages.success(request, "Bet deleted correctly")
+            messages.error(request, "Form is not Valid")
+        messages.error(request, "User not logged")
         return redirect('bets')
 
-class Alter(TemplateView, View):
-    template_name = 'bets/modify_bet.html'
-    model = Bet
+class Register(TemplateView, View):
 
-    def get(self, request, *args, **kwargs):
-        bet = kwargs['bet']
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                obj = Bet.objects.get(bet)
-            else:
-                obj = Bet.objects.filter(user=request.user, id=bet)
-            param = {
-                'rows': obj
-            }
-        messages.success(request, "You must be logged!")
-        return redirect('home')
-
-
-class Test(TemplateView, View):
-    template_name = 'bets/test.html'
-    model = Bet
-
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                obj = self.model.objects.all()
-            else:
-                obj = self.model.objects.filter(user=request.user)
-        param = {
-            'rows': obj,
-            'form': CreateBet}
-        return self.render_to_response(param)
+    template_name = 'bets.html'
+    register_form = RegisterBet
 
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.success(request, "You can now login!")
-            return
-        form = CreateBet(data=request.POST)
-        amount = form.cleaned_data['amount']
-
         user = request.user
-        id = form.cleaned_data['game']
-        game = Game.add_game(id)
+        if not user.is_authenticated:
+            messages.error(request, "User not logged")
+            return
+        form = self.register_form(data=request.POST)
+        if not form.is_valid():
+            messages.error(request, "Form is not Valid")
+            return
 
-        Bet(match=game, user=user, amount=amount)
+        amount = float(form.data['amount'])
+        if user.balance < amount:
+            messages.error(request, "Not Enough Credit")
+            return
 
-    def put(self, request, *args, **kwargs):
-        pass
+        game_id= form.data['game']
+        game_bet= form.data['game_bet']
 
-    def delete(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            Bet.objects.exclude()
+        g = Game()
+        game = g.add_game(game_id)
+        user.withdraw_credits(amount)
+        user.save()
+        bet = Bet(user=user, game=game, amount=amount, game_bet=game_bet)
+        bet.save()
+
+        messages.success(request, "Bet saved")
+        return redirect('bets')
