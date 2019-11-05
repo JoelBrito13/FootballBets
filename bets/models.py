@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from users.models import Person
 from games.models import Game
@@ -33,13 +34,14 @@ class Bet(models.Model):
         if self.game_finished:
             return
         self.game.update()
-        if Game.match_status == 'Finished':
+        if self.game.match_status == 'Finished':
             self.define_profit()        #self.balance = profit of the game
             self.user.insert_credits(
                 self.balance
             )
 
             self.game_finished = True
+            self.save()
 
     def define_profit(self):
         if self.game_bet == self.define_result():
@@ -65,5 +67,10 @@ class Bet(models.Model):
         if self.game_bet == self.DRAW:
             return self.game.prob_D
 
+    def save(self, **kwargs):
+        if Bet.objects.exists() and not self.pk:
+            raise ValidationError('Erroe Saving Game')
+        return super(Bet, self).save(**kwargs)
+
     def __str__(self):
-        return "{} Bet (bet:{},{}€ profit:{})".format(self.user, self.game_bet,self.amount, self.balance)
+        return "{} Bet ({} bet: {},{}€ profit:{})".format(self.user, self.game, self.game_bet.title(), self.amount, self.balance)

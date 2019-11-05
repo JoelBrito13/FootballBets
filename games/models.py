@@ -2,7 +2,7 @@ import requests
 import datetime
 import json
 from django.db import models
-
+from django.core.exceptions import ValidationError
 
 def make_request(url):
     myResponse = requests.get(url, verify=True)
@@ -31,12 +31,13 @@ class Game(models.Model):
     prob_AW = models.FloatField()
 
     def update(self):
-        if self.match_finished():
+        if self.match_finished() and not self.match_status == 'Finished':
             url = "{}&match_id={}".format(self.URL_UPDATE, self.match_id)
             jsonResponse = make_request(url)[0]
             self.match_status = jsonResponse['match_status']
             self.match_hometeam_score = jsonResponse['match_hometeam_score']
             self.match_awayteam_score = jsonResponse['match_awayteam_score']
+            self.save()
 
     def match_finished(self):
         return self.match_date < datetime.date.today()
@@ -59,9 +60,16 @@ class Game(models.Model):
             self.prob_HW = jsonResponse['prob_HW']
             self.prob_D = jsonResponse['prob_D']
             self.prob_AW = jsonResponse['prob_AW']
+
+            self.save()
             return self
 
         return Game.objects.get(search_id)
+
+    def save(self, **kwargs):
+        if Game.objects.exists() and not self.pk:
+            raise ValidationError('Erroe Saving Game')
+        return super(Game, self).save(**kwargs)
 
     def __str__(self):
         return "{} match: {}, {} x {} - {}".format(self.league_name,

@@ -22,8 +22,7 @@ class BetView(TemplateView, View):
             [x.update_status() for x in obj]
             param = {
                 'rows': obj,
-                'form': CreateBet,
-                'deleteForm': self.del_form
+                'form': self.del_form
             }
             return self.render_to_response(param)
 

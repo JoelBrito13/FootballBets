@@ -15,3 +15,4 @@ class ChangeBet(forms.Form):
     user = forms.IntegerField
     game = forms.IntegerField
     amount = forms.FloatField
+
