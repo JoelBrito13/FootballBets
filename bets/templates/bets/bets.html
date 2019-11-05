@@ -6,7 +6,7 @@
       <form action="/bets/" method="post">
         <label>
           {% csrf_token %}
-          <input type="hidden" name="bet_id_del" value="{{x.id}}"/>
+          <input name="bet_id_del" value="{{x.id}}" hidden />
         </label>
       <input type="submit" onclick="return confirm('Are you sure?')" value="Delete"/>
         {{form}}
