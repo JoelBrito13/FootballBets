@@ -31,7 +31,7 @@ class LoginView(TemplateView, View):
 
 class LogoutView(View):
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             return redirect('home')
 
         logout(request)
@@ -43,7 +43,7 @@ class RegisterView(TemplateView):
     template_name = 'users/register.html'
 
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             messages.warning(request, "You are already logged in!")
             return redirect('home')
         return self.render_to_response({'form': CustomUserCreationForm()})

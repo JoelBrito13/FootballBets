@@ -9,7 +9,7 @@ urlpatterns = [
         name='bets'
     ),
     url(
-        regex=r'^alter/<bet>$',
+        regex=r'^alter$',
         view=views.Alter.as_view(),
         name='alter'
     ),
