@@ -26,10 +26,18 @@ class GameView(forms.Form, TemplateView, View):
 class SearchView(forms.Form, TemplateView, View):
     template_name = 'search_results.html'
     search = SearchParam
+    bet = Bet
     json_data = {"Brazil": ("19", "68"), "Portugal": ("115", "391"), "England": ("41", "148")}
+
+    def get(self, request, *args, **kwargs):
+        print("ENTRA")
+        form = SearchParam()
+
+        return self.render_to_response({'form': form, 'bet' : bet})
 
     def post(self, request, *args, **kwargs):
         form = self.search(data=request.POST)
+        bet = self.bet()
         # if not form.cleaned_data['_from']:
         #     _from = str(date.today())
         # else:
@@ -54,10 +62,7 @@ class SearchView(forms.Form, TemplateView, View):
                 '&country_id={}'
                 '&league_id={}'.format(_from, to, country_id, league_id))
             search = {
-                'games': api_get
+                'games': api_get,
+                'bet'  : bet
             }
             return self.render_to_response(search)
-
-    def get(self, request, *args, **kwargs):
-        form = SearchParam()
-        return self.render_to_response({'form': form})
