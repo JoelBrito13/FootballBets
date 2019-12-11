@@ -1,76 +1,46 @@
-from django.contrib import messages
-from django.views.generic import TemplateView, View
-from django.contrib.auth import authenticate
+from rest_framework import status
+from bets.serializers import BetSerializer#, GameSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-from games.models import Game
-from django.shortcuts import redirect
-from .forms import RegisterBet, DeleteForm
+from rest_framework.views import APIView
 
-from .models import Bet
+from .models import Bet, Game
 
-class BetView(TemplateView, View):
-    template_name = 'bets/bets.html'
-    model = Bet
-    del_form=DeleteForm
 
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                obj = Bet.objects.all()
-            else:
-                obj = Bet.objects.filter(user=request.user)
-            [x.update_status() for x in obj]
-            param = {
-                'rows': obj,
-                #'form': self.del_form
-            }
-            return self.render_to_response(param)
-        messages.error(request, "You must be logged!")
-        return redirect('home')
+class BetView(APIView):
+    def get(self, request):
+        bets = Bet.objects.all()
+        serializer = BetSerializer(bets, many=True)
+        return Response(serializer.data)
 
-    def post(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            form = self.del_form(data=request.POST)
-            if form.is_valid():
-                bet_id_del = form.cleaned_data['bet_id_del']
-                bet = Bet.objects.get(bet_id_del)
-                if bet.user == request.user or request.user.is_superuser:
-                    bet.user.insert_credits(bet.amount)  # return credit to user
-                    bet.delete()
-                    messages.success(request, "Bet deleted correctly")
-            messages.error(request, "Form is not Valid")
-        messages.error(request, "User not logged")
-        return redirect('bets')
+    def post(self, request):
+        serializer = BetSerializer(data=request.data)
+        print("SERializer", serializer)
+        if serializer.is_valid():
+            print("GAME", serializer.data)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class Register(TemplateView, View):
+    def delete(self, request):
+        id = int(request.GET['bet'])
+        try:
+            bet = Bet.objects.get(id=id)
+        except Bet.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        Bet.delete(bet)
+        return Response(BetSerializer(data=bet))
 
-    template_name = 'bets.html'
-    register_form = RegisterBet
 
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        if not user.is_authenticated:
-            messages.error(request, "User not logged")
-            return
-        form = self.register_form(data=request.POST)
-        if not form.is_valid():
-            messages.error(request, "Form is not Valid")
-            return
+@api_view(['GET'])
+def view_game(request, match_id):
+    print("request", request)
+    print(match_id)
+    try:
+        game = Game.objects.get(match_id=match_id)
+    except Game.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-        amount = float(form.data['amount'])
-        if user.balance < amount:
-            messages.error(request, "Not Enough Credit")
-            return
+    return Response()#GameSerializer(data=game))
 
-        game_id= form.data['game']
-        game_bet= form.data['game_bet']
-
-        g = Game()
-        game = g.add_game(game_id)
-        user.withdraw_credits(amount)
-        user.save()
-        bet = Bet(user=user, game=game, amount=amount, game_bet=game_bet)
-        bet.save()
-
-        messages.success(request, "Bet saved")
-        return redirect('bets')

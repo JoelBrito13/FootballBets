@@ -1,0 +1,33 @@
+
+
+class Register(TemplateView, View):
+    template_name = 'bets.html'
+    register_form = RegisterBet
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if not user.is_authenticated:
+            messages.error(request, "User not logged")
+            return
+        form = self.register_form(data=request.POST)
+        if not form.is_valid():
+            messages.error(request, "Form is not Valid")
+            return
+
+        amount = float(form.data['amount'])
+        if user.balance < amount:
+            messages.error(request, "Not Enough Credit")
+            return
+
+        game_id = form.data['game']
+        game_bet = form.data['game_bet']
+
+        g = Game()
+        game = g.add_game(game_id)
+        user.withdraw_credits(amount)
+        user.save()
+        bet = Bet(user=user, game=game, amount=amount, game_bet=game_bet)
+        bet.save()
+
+        messages.success(request, "Bet saved")
+        return redirect('bets')

@@ -1,4 +1,4 @@
-from django.conf.urls import  url
+from django.conf.urls import url
 
 from . import views
 
@@ -9,8 +9,9 @@ urlpatterns = [
         name='bets'
     ),
     url(
-        regex=r'^register/$',
-        view=views.Register.as_view(),
-        name='alter'
+        regex=r'game/<int:match_id>/^$',
+        view=views.view_game,
+        name='game'
     ),
+
 ]
