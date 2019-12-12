@@ -12,7 +12,7 @@ ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 
 env = environ.Env()
 
-ALLOWED_HOSTS = ['jeanbrito.pythonanywhere.com']
+ALLOWED_HOSTS = ['jeanbrito.pythonanywhere.com', '127.0.0.1']
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
