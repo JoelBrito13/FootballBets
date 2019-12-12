@@ -12,9 +12,7 @@ ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 
 env = environ.Env()
 
-
 ALLOWED_HOSTS = ['jeanbrito.pythonanywhere.com']
-
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -36,6 +34,7 @@ DJANGO_APPS = (
     # REST
     'rest_framework',
     'corsheaders',
+    'rest_framework.authtoken',
 
 )
 THIRD_PARTY_APPS = (
@@ -70,9 +69,14 @@ MIDDLEWARE = (
 # REST
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication'],
+
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny'
-    ]
+    ],
+
 }
 
 CORS_ORIGIN_ALLOW_ALL = True

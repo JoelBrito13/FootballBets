@@ -21,7 +21,9 @@ class BetSerializer(serializers.ModelSerializer):
             if "game" in data:
                 search_id = data.pop("game")
                 game = Game()
-                game.add_game(search_id)
+                game_check = game.add_game(search_id)
+                if game_check.match_status == 'Finished':
+                    raise Exception("Cannot create bet of a finished game")
         super(BetSerializer, self).__init__(instance=instance, data=data, **kwargs)
 
 
