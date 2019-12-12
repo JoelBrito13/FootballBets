@@ -1,9 +1,10 @@
-requests
+djangorestframework
+requests==2.22.0
 Django==2.2.6
 django-environ==0.4.4
 django-widget-tweaks==1.4.1
 django-debug-toolbar==1.8
-djangorestframework
+djangorestframework==
 markdown
 django-filter
 django-cors-headers

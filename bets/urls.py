@@ -9,7 +9,7 @@ urlpatterns = [
         name='bets'
     ),
     url(
-        regex=r'game/<int:match_id>/^$',
+        regex=r'^game/(?P<match_id>[0-9]+)/$',
         view=views.view_game,
         name='game'
     ),

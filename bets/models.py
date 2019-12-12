@@ -5,12 +5,12 @@ import json
 from django.db import models
 from users.models import Person
 
-
+URL_UPDATE = "https://apiv2.apifootball.com/" \
+                 "?action=get_predictions" \
+                 "&APIkey=2460239a218e22dd4c13f692c3caedafd1ef37cfc2fcbe58e645065c1fefd9d3"
 class Game(models.Model):
     # Constants in Model class
-    URL_UPDATE = "https://apiv2.apifootball.com/" \
-                 "?action=get_predictions" \
-                 "&APIkey=141b8a53928078cd692ab00bbba24a1ec56e82d986c1decba0875b11147949c9"
+
     match_id = models.IntegerField(primary_key=True)
     country_name = models.CharField(max_length=50)
     league_name = models.CharField(max_length=70)
@@ -27,7 +27,7 @@ class Game(models.Model):
 
     def update(self):
         if self.match_finished() and not self.match_status == 'Finished':
-            url = "{}&match_id={}".format(self.URL_UPDATE, self.match_id)
+            url = "{}&match_id={}".format(URL_UPDATE, self.match_id)
             jsonResponse = self.make_request(url)[0]
             self.match_status = jsonResponse['match_status']
             self.match_hometeam_score = jsonResponse['match_hometeam_score']
@@ -40,27 +40,33 @@ class Game(models.Model):
     def add_game(self, search_id):
         current = Game.objects.filter(match_id=search_id)
         if not current:
-            url = "{}&match_id={}".format(self.URL_UPDATE, search_id)
-            jsonResponse = self.make_request(url)[0]
+            url = "{}&match_id={}".format(URL_UPDATE, search_id)
+            json_response = self.make_request(url)[0]
 
-            self.match_id = int(jsonResponse['match_id'])
-            self.country_name = jsonResponse['country_name']
-            self.league_name = jsonResponse['league_name']
-            self.match_date = jsonResponse['match_date']
-            self.match_status = jsonResponse['match_status']
-            self.match_time = jsonResponse['match_time']
-            self.match_hometeam_name = jsonResponse['match_hometeam_name']
-            self.match_awayteam_name = jsonResponse['match_awayteam_name']
-            self.prob_HW = float(jsonResponse['prob_HW'])
-            self.prob_D = float(jsonResponse['prob_D'])
-            self.prob_AW = float(jsonResponse['prob_AW'])
+            self.match_id = int(json_response['match_id'])
+            self.country_name = json_response['country_name']
+            self.league_name = json_response['league_name']
+            self.match_date = json_response['match_date']
+            self.match_status = json_response['match_status']
+            self.match_time = json_response['match_time']
+            self.match_hometeam_name = json_response['match_hometeam_name']
+            self.match_awayteam_name = json_response['match_awayteam_name']
+            self.prob_HW = float(json_response['prob_HW'])
+            self.prob_D = float(json_response['prob_D'])
+            self.prob_AW = float(json_response['prob_AW'])
 
             self.save()
             return self
 
         return current
 
-    def make_request(self, url):
+    def save(self, **kwargs):
+        if Game.objects.exists() and not self.pk:
+            raise ValidationError('Error Saving Game')
+        return super().save(**kwargs)
+
+    @staticmethod
+    def make_request(url):
         myResponse = requests.get(url, verify=True)
         if (myResponse.ok):
             return json.loads(myResponse.content)
@@ -122,6 +128,7 @@ class Bet(models.Model):
     def define_result(self):
         home = self.game.match_hometeam_score
         away = self.game.match_awayteam_score
+        print(self.__str__())
         if home > away:
             return self.HOME_WIN
         elif home < away:

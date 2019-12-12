@@ -15,6 +15,14 @@ class BetSerializer(serializers.ModelSerializer):
             'balance'
         )
 
+    def __init__(self, instance=None, data=None,  **kwargs):
+        if "data" in kwargs:
+            data = kwargs.pop("data")
+            if "game" in data:
+                search_id = data.pop("game")
+                game = Game()
+                game.add_game(search_id)
+        super(BetSerializer, self).__init__(instance=instance, data=data, **kwargs)
 
 
 class GameSerializer(serializers.ModelSerializer):
@@ -33,5 +41,8 @@ class GameSerializer(serializers.ModelSerializer):
             'match_awayteam_score',
             'prob_HW',
             'prob_D',
-            'prob_AW',
+            'prob_AW'
         )
+
+    def __init__(self, instance=None, data=None, **kwargs):
+        super(GameSerializer, self).__init__(instance=instance, data=data, **kwargs)
