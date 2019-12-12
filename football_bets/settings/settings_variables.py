@@ -12,6 +12,10 @@ ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 
 env = environ.Env()
 
+
+ALLOWED_HOSTS = ['jeanbrito.pythonanywhere.com']
+
+
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
 DJANGO_APPS = (
