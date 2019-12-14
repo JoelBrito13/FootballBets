@@ -26,12 +26,12 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
+
+                  url(r'^$', schema_view.with_ui('swagger', cache_timeout=None), name='schema-swagger-ui'),
                   url(settings.ADMIN_URL, admin.site.urls),
-                  url(r'^$', TemplateView.as_view(template_name='index.html'), name="home"),
                   url(r'^users/', include('users.urls')),
                   url(r'^bets/', include('bets.urls')),
                   url(r'^swagger(?P<format>.json|.yaml)$', schema_view.without_ui(cache_timeout=None), name='schema-json'),
-                  url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=None), name='schema-swagger-ui'),
                   url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=None), name='schema-redoc'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
