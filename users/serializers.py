@@ -19,6 +19,19 @@ class PersonSerializer(serializers.ModelSerializer):
             'balance'
         )
 
+class AddPersonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = (
+            'username',
+            'password',
+            'first_name',
+            'last_name',
+            'email',
+            'description',
+        )
+
+
 
 class AuthTokenSerializer(serializers.Serializer):
     username = serializers.CharField(label=_("Username"))

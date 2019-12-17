@@ -3,7 +3,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.compat import coreapi, coreschema
 from rest_framework.schemas import ManualSchema
 
-from users.serializers import PersonSerializer
+from users.serializers import PersonSerializer, AddPersonSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import parsers, renderers, status
@@ -26,6 +26,18 @@ def get_users(request):
         serializer = PersonSerializer(user)
         return Response(serializer.data)
     return Response({'ERROR': 'User not Valid'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['POST'])
+def create_user(request):
+    serializer = AddPersonSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        try:
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except:
+            return Response({"ERROR": "Error trying to create user"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ObtainAuthToken(APIView):

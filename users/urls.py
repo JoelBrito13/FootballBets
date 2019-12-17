@@ -14,6 +14,11 @@ urlpatterns = [
         name='login'
     ),
     url(
+        regex=r'^create/$',
+        view=views.create_user,
+        name='create_user'
+    ),
+    url(
         regex=r'^balance/$',
         view=views.Balance.as_view(),
         name='balance'
