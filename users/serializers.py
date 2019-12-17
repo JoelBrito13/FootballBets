@@ -10,8 +10,13 @@ class PersonSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'description',
+            'is_superuser',
             'balance',
-            'username'
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'balance'
         )
 
 
